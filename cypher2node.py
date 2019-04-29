@@ -1,6 +1,7 @@
 import csv
 import json
 import pprint
+import unidecode
 import sys
 
 
@@ -28,6 +29,7 @@ def main():
     journal_pubs = []
 
     # The input consists of a JSON string per line.
+    author_key = set()
     for line in sys.stdin:
         rec = json.loads(line)['p']
         out = {}
@@ -46,11 +48,22 @@ def main():
             # Copy over properties.
             try:
                 out['name'] = rec['properties']['name']
-                out['_key'] = rec['properties']['id']
+                out['_key'] = unidecode.unidecode(rec['properties']['id'])
             except KeyError as e:
                 print(e)
                 pprint.pprint(rec)
 
+            # Disambiguate author keys if they wind up equal to something
+            # already seen (this can happen if the author appears twice, once
+            # with diacritics and once without).
+            suffix = 0
+            key = out['_key']
+            while key in author_key:
+                suffix += 1
+                key = out['_key'] + str(suffix)
+            out['_key'] = key
+
+            author_key.add(out['_key'])
             authors.append(out)
 
         elif label == 'ConferencePaper':

@@ -23,7 +23,8 @@ edge CSV files suitable for [Multinet Girder](https://github.com/multinet-app/mu
    will create files `author.csv`, `journal.csv`, and `conference.csv`
    containing node data of those types.
 6. Extract the edge data and pipe it through the Python script to convert it to
-   a CSV: `CYPHERSHELL=cypher-shell USERNAME=neo4j PASSWORD=neo4j sh all-links.sh | python cypher2edge.py author.csv journal.csv conference.csv >edges.csv` (again substituting proper values for `CYPHERSHELL`, `USERNAME`,
+   a CSV: `CYPHERSHELL=cypher-shell USERNAME=neo4j PASSWORD=neo4j sh all-links.sh | python cypher2edge.py author.csv journal.csv conference.csv >authorship.csv`
+   (again substituting proper values for `CYPHERSHELL`, `USERNAME`,
    and `PASSWORD`). This will create file `edges.csv` containing edge data
    between the records in the three node data files.
 
